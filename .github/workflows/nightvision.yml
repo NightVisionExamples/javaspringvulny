@@ -41,8 +41,9 @@ jobs:
         with:
           sarif_file: results.sarif
 
-      - name: Upload SARIF file for debugging
-        uses: actions/upload-artifact@v3
+      - name: Upload SARIF file and Swagger file for debugging
         with:
-          name: javaspringvulny.sarif
-          path: results.sarif
+          name: sarif-and-swagger
+          path: |
+            results.sarif
+            openapi-spec.yml
