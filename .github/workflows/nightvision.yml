@@ -18,7 +18,7 @@ jobs:
 
       - name: (1) Install NightVision and set the project
         run: |
-          wget -c https://downloads.nightvision.net/binaries/staging/11-15-2023/nightvision_linux_amd64_v1/nightvision -O nightvision ; chmod +x nightvision; sudo mv nightvision /usr/local/bin/
+          wget -c https://downloads.nightvision.net/binaries/staging/11-15-2023/dist/nightvision_linux_amd64_v1/nightvision -O nightvision ; chmod +x nightvision; sudo mv nightvision /usr/local/bin/
           python -m pip install semgrep --user
           nightvision project set -p $NIGHTVISION_PROJECT
 
