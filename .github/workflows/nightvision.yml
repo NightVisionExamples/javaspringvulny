@@ -25,7 +25,7 @@ jobs:
           nightvision project set -p $NIGHTVISION_PROJECT
 
       - name: (3) Extract API documentation from code
-        run: nightvision swagger extract ./ -o openapi-spec.yaml -t javaspringvulny-api -l spring
+        run: nightvision swagger extract ./ -o openapi-spec.yml -t javaspringvulny-api -l spring
 
       - name: (4) Start the app
         run: docker-compose up -d; sleep 10
@@ -41,10 +41,14 @@ jobs:
         with:
           sarif_file: results.sarif
 
-      - name: Upload SARIF file and Swagger file for debugging
+      - name: Upload SARIF file
         uses: actions/upload-artifact@v3
         with:
-          name: sarif-and-swagger
-          path: |
-            results.sarif
-            openapi-spec.yml
+          name: javaspringvulny.sarif
+          path: results.sarif
+
+      - name: Upload Swagger file
+        uses: actions/upload-artifact@v3
+        with:
+          name: openapi-spec.yml
+          path: openapi-spec.yml
