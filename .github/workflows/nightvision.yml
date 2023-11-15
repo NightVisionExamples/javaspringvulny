@@ -1,0 +1,40 @@
+name: Test Case - Java Spring App
+
+on:
+  push:
+  workflow_dispatch:
+
+env:
+  NIGHTVISION_TOKEN: ${{ secrets.NIGHTVISION_TOKEN }}
+  NIGHTVISION_API_URL: ${{ secrets.NIGHTVISION_API_URL }}
+
+jobs:
+  test:
+    permissions:
+      security-events: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: (1) Clone Code
+        uses: actions/checkout@v3
+
+      - name: (2) Install NightVision
+        run: |
+          wget -c https://downloads.nightvision.net/binaries/staging/11-15-2023/nightvision_linux_amd64 -O nightvision ; chmod +x nightvision; sudo mv nightvision /usr/local/bin/
+					python -m pip install semgrep --user
+
+      - name: (3) Extract API documentation from code
+        run: nightvision swagger extract ./ -o openapi-spec.yaml -t javaspringvulny-api -l spring
+
+      - name: (4) Start the app
+        run: docker-compose up -d; sleep 10
+
+      - name: (5) Scan the API
+        run: |
+          export NIGHTVISION_SCAN_ID=$(nightvision scan -t javaspringvulny-api --export-sarif --app javaspringvulny-api)
+          nightvision export sarif --scan-id="$(echo $NIGHTVISION_SCAN_ID)" --output results.sarif
+
+      - name: (6) Upload SARIF file to GitHub Security Alerts if vulnerabilities are found
+        uses: github/codeql-action/upload-sarif@v2
+        if: success()
+        with:
+          sarif_file: results.sarif
