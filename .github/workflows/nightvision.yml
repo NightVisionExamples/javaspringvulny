@@ -6,6 +6,8 @@ on:
 
 env:
   NIGHTVISION_TOKEN: ${{ secrets.NIGHTVISION_TOKEN }}
+  NIGHTVISION_PROJECT: ${{ secrets.NIGHTVISION_PROJECT }}
+  NIGHTVISION_API_URL: ${{ secrets.NIGHTVISION_API_URL }}
 
 jobs:
   test:
