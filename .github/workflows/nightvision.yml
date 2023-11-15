@@ -32,7 +32,7 @@ jobs:
 
       - name: (5) Scan the API
         run: |
-          export NIGHTVISION_SCAN_ID=$(nightvision scan -t javaspringvulny-api --export-sarif --app javaspringvulny-api)
+          export NIGHTVISION_SCAN_ID=$(nightvision scan -t javaspringvulny-api --export-sarif --app javaspringvulny-api --auth javaspringvulny-api)
           nightvision export sarif --scan-id="$(echo $NIGHTVISION_SCAN_ID)" --output results.sarif
 
       - name: (6) Upload SARIF file to GitHub Security Alerts if vulnerabilities are found
