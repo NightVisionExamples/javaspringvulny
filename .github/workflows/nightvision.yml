@@ -41,3 +41,8 @@ jobs:
         with:
           sarif_file: results.sarif
 
+      - name: Upload SARIF file for debugging
+        uses: actions/upload-artifact@v3
+        with:
+          name: javaspringvulny.sarif
+          path: results.sarif
